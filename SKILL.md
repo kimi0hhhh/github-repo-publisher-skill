@@ -24,8 +24,10 @@ metadata:
 - **README 规格**见 `references/readme-spec.md`：徽章行（shields.io，英文标签）→ 章节序 → 双语页内切换写法 → 素材命名。
 - **双语页内切换**：单文件双语言（`<details open>` 中文 + `<details>` English），不跳转。旧的双文件模式
   （README.md + README.en.md）用 `scripts/fold-bilingual.js` 一键合并折叠。
-- **素材**：图片/演示 GIF 用 HTML/CSS → 无头 Chrome 截图管线（图用 1.5x、GIF 用 1.0x 逐帧 + PIL 合成），
-  中英各一套，命名 `docs/assets/<name>.zh.png|gif` / `<name>.en.png|gif`。
+- **素材（门禁 A0，强制项）**：必产 `docs/assets/pipeline.{zh,en}.png`（流程/架构图）与
+  `demo.{zh,en}.gif`（点击演示动图，7 帧）——中英各一套。跑 `node scripts/make-assets.js <仓库根>`
+  生成（脚本即模板：只改顶部 `T{}` 文案，版式通用）。**素材缺任一 = 门面不完整，禁止进入 S2。**
+  管线：HTML/CSS 卡片 → 无头 Chrome 截图（图 1.5x / GIF 帧 1.0x）→ PIL 合成（首帧调色板统一防闪烁）。
 - **必配文件**：`LICENSE`（默认 MIT）、`.gitignore`、`install.sh` + `install.ps1`、
   `docs/CHANGELOG.md`、`docs/CREDITS.md`（引用与来源）。
 
@@ -103,6 +105,7 @@ git branch -M main
 | `scripts/leak-audit.js` | 数据隔离审计 | 退出码 1 = 有 BLOCK；扫描密钥/隐私/路径/大文件 |
 | `scripts/make-repo.js` | 建仓 + topics + 推送 | token 走 `GH_TOKEN` 环境变量；推送用一次性 URL，不落盘 |
 | `scripts/fold-bilingual.js` | 双语双文件 → 单文件页内切换 | 输入 README.md + README.en.md；<details> 折叠 |
+| `scripts/make-assets.js` | 双语门面素材生成（流程图 + 演示 GIF） | 模板脚本：只改顶部 `T{}` 文案；图 1.5x、GIF 帧 1.0x，PIL 合成 |
 
 ## 环境注记
 

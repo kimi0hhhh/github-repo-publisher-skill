@@ -6,6 +6,7 @@ node_modules/
 # 出图/构建中间产物
 chart-src/
 charts/
+.asset-src/
 dist/
 
 # 敏感文件（审计口径同步）

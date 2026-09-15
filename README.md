@@ -20,12 +20,15 @@
 
 **五段流水线**：备料（README 规格/双语页内切换/双语素材）→ **数据隔离审计**（密钥/隐私/路径，先审计后发布）→ 本地 git → **建仓（询问 token）** → 验收与卫生。
 
-**两道硬门禁**（本 SOP 的核心价值）：
+**三道门禁**（审计与 token 是硬门禁，素材是门面门禁）：
 
 | 门禁 | 规则 |
 |---|---|
 | **数据隔离审计** | `leak-audit` 有任一 BLOCK（真实密钥/私钥/`.env`/超大文件）→ **禁止建仓**；WARN（个人路径/邮箱/内网地址）逐条人工判定，环境文件按「本机实测」标注豁免 |
 | **Token 即问即用** | 建仓前先探测本机凭据；没有则**询问用户提供 token**；token 只经环境变量传递——**不落盘、不写入 `.git/config`**；用完提醒吊销 |
+| **门面完整（A0）** | 图片与动图是**必产项**：`pipeline.{zh,en}.png` + `demo.{zh,en}.gif`，中英各一套；缺任一禁进审计（`make-assets.js` 一键生成） |
+
+![五段流水线：备料 → 数据隔离审计 → 本地 git → 建仓与推送 → 验收与卫生](docs/assets/pipeline.zh.png)
 
 ## 快速开始
 
@@ -39,6 +42,13 @@ GH_TOKEN=<token> node scripts/make-repo.js \        # ③ 建仓+topics+推送�
 # 场景二：双语 README 合并为单文件页内切换
 node scripts/fold-bilingual.js <项目目录>
 ```
+
+## Demo 演示
+
+![Demo：一次真实发布（触发 → 审计 → 本地 git → 建仓问 token → 验收）](docs/assets/demo.zh.gif)
+
+> 上图来自真实运行——**本仓库自身的发布**：审计 0 BLOCK / 0 WARN、public 仓库 + 10 topics、
+> `.git/config` 无 token、temp 脚本已清理。
 
 ## 三个脚本（零依赖，Node ≥14）
 
@@ -101,12 +111,15 @@ An Agent Skill that turns "publish a local project as a well-formed open-source 
 (secrets / privacy / paths — audit before publish) → local git → **repo creation (ask for a token)** →
 verification & hygiene.
 
-**Two hard gates** (the core value of this SOP):
+**Three gates** (audit and token are hard gates; assets are the front-page gate):
 
 | Gate | Rule |
 |---|---|
 | **Data-isolation audit** | Any BLOCK finding (real secrets / private keys / `.env` / oversized files) → **no repo creation**; WARN items (personal paths / emails / internal hosts) judged one by one, with a "local-tested" exemption for environment files |
 | **Ask-for-token** | Probe local credentials first; if none, **ask the user for a token**; the token travels only via environment variable — **never written to disk or `.git/config`**; remind the user to revoke it afterwards |
+| **Front page complete (A0)** | Images and a demo GIF are **mandatory**: `pipeline.{zh,en}.png` + `demo.{zh,en}.gif` (both languages); missing any → cannot enter the audit stage (`make-assets.js` generates them in one run) |
+
+![Five-stage pipeline: Prepare → Leak Audit → Local git → Create & Push → Verify & Hygiene](docs/assets/pipeline.en.png)
 
 ## Quick Start
 
@@ -120,6 +133,13 @@ GH_TOKEN=<token> node scripts/make-repo.js \         # 3. create repo + topics +
 # Case 2: fold a bilingual README into a single in-page-switch file
 node scripts/fold-bilingual.js <project-dir>
 ```
+
+## Demo
+
+![Demo: a real publishing run (trigger → audit → local git → create with token → verify)](docs/assets/demo.en.gif)
+
+> The GIF is from a real run — **this repository's own release**: audit 0 BLOCK / 0 WARN,
+> public repo + 10 topics, `.git/config` clean (no token), temp scripts removed.
 
 ## The Three Scripts (zero-dependency, Node ≥14)
 
