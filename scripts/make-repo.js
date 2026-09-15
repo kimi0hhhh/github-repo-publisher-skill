@@ -76,6 +76,11 @@ const git = (cmd, opts) => cp.execSync(`"${GIT}" -C "${DIR}" ${cmd}`, Object.ass
   const out = cp.execSync(`"${GIT}" -C "${DIR}" push "${pushUrl}" ${branch}`, { encoding: "utf8", stdio: "pipe" });
   console.log("✅ 推送成功（" + branch + "）:", (out || "").trim().split("\n").slice(-1)[0] || "ok");
 
+  // 确保 origin 已配置（脚本可能在一个从未配过 remote 的仓库上运行）
+  try { git("remote get-url origin"); } catch (e) {
+    git(`remote add origin https://github.com/${owner}/${NAME}.git`);
+    console.log("ℹ 已补配 origin remote（此前不存在）");
+  }
   try { git("fetch origin"); } catch (e) {}
   try { git(`branch -u origin/${branch} ${branch}`); console.log("✅ 已设置 upstream: origin/" + branch); } catch (e) {}
   const ls = cp.execSync(`"${GIT}" -C "${DIR}" ls-remote origin`, { encoding: "utf8" });
